@@ -1,5 +1,4 @@
 # ViolinNotes
-<br>
 A program for finding notes, fingerings, strings, and positions on a violin.
 <br><br>
 CURRENT VERSION:
