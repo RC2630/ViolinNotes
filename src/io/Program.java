@@ -30,6 +30,7 @@ public class Program {
         int numQuestionMark = 0;
         while (!continueLooping.equals("no")) {
             System.out.print("\nFor each of the following questions, if you do not know, then please enter \"???\""
+                    + "\nIf there are no unknowns, the program will check and validate your input."
                     + "\n(Warning: You can only enter \"???\" once each time. In other words, there can only be 1 unknown.)"
                     + "\n\nWhat is the note? Use format like \"G#3\" for the lowest G# playable on a violin: ");
             rawInput = scanner.nextLine();
@@ -72,7 +73,41 @@ public class Program {
             try {
                 switch (theUnknown) {
                     case "none":
-                        System.out.print("\nYou have all the information you need. You don't need to use this program, lol!\n");
+                        System.out.print("\nYou do not have any unknowns. We will proceed to check and validate your input.");
+                        Validation validation = new Validation(note, string, position, fingering);
+                        if (validation.valid()) {
+                            System.out.print("\nWe have checked that your input makes sense for a violin. You are good to go!\n");
+                        } else {
+                            note = validation.note(); string = validation.string();
+                            position = validation.position(); fingering = validation.fingering();
+                            System.out.print("\n\nYour input does not make sense for a violin. Here is what could make sense:\n"
+                                + "Keeping your current string, position, and fingering - your note should be: " + note.getNote());
+                            if (note.hasSynonym()) {
+                                System.out.print(" or " + note.getSynonym());
+                            }
+                            System.out.print("\nKeeping your current note, position, and fingering - your string should be: " );
+                            if (validation.strangeString()) {
+                                System.out.print("???");
+                            } else {
+                                System.out.print(string);
+                            }
+                            System.out.print("\nKeeping your current note, string, and fingering - your position should be: ");
+                            if (validation.strangePosition()) {
+                                System.out.print("???");
+                            } else {
+                                System.out.print(position);
+                            }
+                            System.out.print("\nKeeping your current note, string, and position - your fingering should be: ");
+                            if (validation.strangeFingering()) {
+                                System.out.print("???");
+                            } else {
+                                System.out.print(fingering);
+                                if (fingering.hasSynonym()) {
+                                    System.out.print(" or " + fingering.getSynonym());
+                                }
+                            }
+                            System.out.print("\n");
+                        }
                         break;
                     case "note":
                         System.out.print("\nYour unknown is: NOTE");
